@@ -13,41 +13,34 @@ const Contacto = () => {
   const [errors, setErrors] = useState({});
   const [charCount, setCharCount] = useState(0);
 
-  // Mostrar error
   const mostrarError = (field, mensajeError) => {
     setErrors(prev => ({ ...prev, [field]: mensajeError }));
   };
 
-  // Quitar error
   const quitarError = (field) => {
     setErrors(prev => ({ ...prev, [field]: '' }));
   };
 
-  // Evitar números en campos de texto
   const evitarNumeros = (event) => {
     if (event.key >= '0' && event.key <= '9') {
       event.preventDefault();
     }
   };
 
-  // Limpiar números de un valor
   const limpiarNumeros = (value) => {
     return value.replace(/[0-9]/g, '');
   };
 
-  // Manejar cambios en inputs
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     let cleanValue = value;
 
-    // Limpiar números para nombre y apellido
     if (name === 'nombre' || name === 'apellido') {
       cleanValue = limpiarNumeros(value);
     }
 
     setFormData(prev => ({ ...prev, [name]: cleanValue }));
 
-    // Validaciones en tiempo real
     if (name === 'nombre') {
       cleanValue.trim() !== '' ? quitarError('nombre') : mostrarError('nombre', 'Por favor, ingresa tu nombre.');
     }
@@ -84,12 +77,10 @@ const Contacto = () => {
     }
   };
 
-  // Manejar envío del formulario
   const handleSubmit = (e) => {
     e.preventDefault();
     let esValido = true;
 
-    // Validaciones finales
     if (formData.nombre.trim() === '') {
       mostrarError('nombre', 'Por favor, ingresa tu nombre.');
       esValido = false;
@@ -123,7 +114,6 @@ const Contacto = () => {
 
     if (esValido) {
       alert('Formulario enviado correctamente');
-      // Aquí puedes agregar la lógica para enviar el formulario
     }
   };
 

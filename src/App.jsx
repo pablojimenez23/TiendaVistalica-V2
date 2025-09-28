@@ -1,4 +1,4 @@
-// src/App.jsx - Corregido con Login
+// src/App.jsx - Con CarritoProvider
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from "./Componentes/Navbar";
@@ -15,8 +15,9 @@ import Login from "./Componentes/Login";
 import Registro from "./Componentes/Registro";
 import Impacto from "./Componentes/Impacto";
 import Contacto from "./Componentes/Contacto";
+import { CarritoProvider } from "./Componentes/Carrito";
+import Carrito from "./Componentes/Carrito";
 
-// Componente para la página de inicio
 const Home = () => (
   <>
     <HeroCarousel />
@@ -35,25 +36,27 @@ const Home = () => (
 
 function App() {
   return (
-    <Router>
-      <div className="App">
-        <Navbar />
-        
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/inicio" element={<Home />} />
-          <Route path="/catalogo" element={<Catalogo />} />
-          <Route path="/colecciones" element={<Colecciones />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/registro" element={<Registro />} />
-          <Route path="/registro" element={<Registro />} />
-          <Route path="/impacto" element={<Impacto />} />
-          <Route path="/contacto" element={<Contacto />} />
-        </Routes>
-        
-        <Footer />
-      </div>
-    </Router>
+    <CarritoProvider>
+      <Router>
+        <div className="App">
+          <Navbar />
+          
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/inicio" element={<Home />} />
+            <Route path="/catalogo" element={<Catalogo />} />
+            <Route path="/colecciones" element={<Colecciones />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/registro" element={<Registro />} />
+            <Route path="/impacto" element={<Impacto />} />
+            <Route path="/contacto" element={<Contacto />} />
+          </Routes>
+          
+          <Footer />
+          <Carrito />
+        </div>
+      </Router>
+    </CarritoProvider>
   );
 }
 

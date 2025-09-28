@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-
+import { useCarrito } from "./Carrito";
 import "../Css/Estilo Catalogo.css";
 
 const Catalogo = () => {
   const [categoriaActiva, setCategoriaActiva] = useState('todos');
+  const { agregarProducto } = useCarrito();
 
   const botonesFiltro = [
     { categoria: 'todos', label: 'Todos' },
@@ -15,7 +16,6 @@ const Catalogo = () => {
     { categoria: 'accesorios', label: 'Accesorios' }
   ];
 
-  // Datos de productos organizados
   const productos = {
     sweater: [
       { 
@@ -186,6 +186,7 @@ const Catalogo = () => {
           <button 
             className={`btn ${producto.stock ? 'btn-primary' : 'btn-sin-stock'}`}
             disabled={!producto.stock}
+            onClick={() => producto.stock && agregarProducto(producto)}
           >
             {producto.stock ? 'Agregar al carrito' : 'Sin stock'}
           </button>

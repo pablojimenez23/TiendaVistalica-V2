@@ -1,6 +1,6 @@
-// src/Componentes/Navbar.jsx
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
+import { CarritoBoton } from "./Carrito";
 import "../Css/Estilo.css";
 
 const Navbar = () => {
@@ -75,9 +75,7 @@ const Navbar = () => {
             <button className="btn btn-outline-success me-2" title="Buscar">
               <i className="bi bi-search"></i>
             </button>
-            <button className="btn btn-outline-dark me-2" type="button" title="Carrito de compras">
-              <i className="bi bi-bag"></i>
-            </button>
+            <CarritoBoton />
             <Link to="/login" className="btn btn-outline-dark me-2" title="Usuario">
               <i className="bi bi-person"></i>
             </Link>         

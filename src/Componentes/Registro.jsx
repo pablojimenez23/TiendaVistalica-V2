@@ -1,4 +1,3 @@
-// src/Componentes/Registro.jsx
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import "../Css/Estilo.css";
@@ -15,7 +14,7 @@ const Registro = () => {
   });
   const [errors, setErrors] = useState({});
 
-  // Validar nombre (solo letras y espacios)
+  // Validar nombre 
   const validarNombre = (value) => {
     const regex = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/;
     if (value.trim() === '') {
@@ -26,7 +25,7 @@ const Registro = () => {
     return '';
   };
 
-  // Validar apellido (solo letras y espacios)
+  // Validar apellido
   const validarApellido = (value) => {
     const regex = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/;
     if (value.trim() === '') {
@@ -37,7 +36,7 @@ const Registro = () => {
     return '';
   };
 
-  // Validar género
+  // Validar genero
   const validarGenero = (value) => {
     if (value === '' || value === null) {
       return 'Por favor, selecciona un género.';
@@ -45,7 +44,7 @@ const Registro = () => {
     return '';
   };
 
-  // Validar correo electrónico
+  // Validar correo 
   const validarCorreoElectronico = (value) => {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (value.trim() === '') {
@@ -56,7 +55,7 @@ const Registro = () => {
     return '';
   };
 
-  // Validar contraseña fuerte
+  // Validar contraseña
   const validarPassword = (value) => {
     const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
     if (value.trim() === '') {
@@ -67,7 +66,7 @@ const Registro = () => {
     return '';
   };
 
-  // Validar confirmación de contraseña
+  // Validar confirmacion de contraseña
   const validarPasswordConfirm = (password, confirmPassword) => {
     if (confirmPassword.trim() === '') {
       return 'Debe confirmar la contraseña.';
@@ -77,12 +76,10 @@ const Registro = () => {
     return '';
   };
 
-  // Manejar cambios en inputs
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
 
-    // Validación en tiempo real
     let error = '';
     switch (name) {
       case 'nombre':
@@ -99,7 +96,6 @@ const Registro = () => {
         break;
       case 'password':
         error = validarPassword(value);
-        // También revalidar confirmación si ya se ingresó
         if (formData.passwordConfirm) {
           const confirmError = validarPasswordConfirm(value, formData.passwordConfirm);
           setErrors(prev => ({ ...prev, passwordConfirm: confirmError }));
@@ -115,7 +111,7 @@ const Registro = () => {
     setErrors(prev => ({ ...prev, [name]: error }));
   };
 
-  // Manejar envío del formulario
+  // Manejar envios del formulario
   const handleSubmit = (e) => {
     e.preventDefault();
     
@@ -148,7 +144,7 @@ const Registro = () => {
         password: '',
         passwordConfirm: ''
       });
-      navigate('/'); // Redirige al inicio
+      navigate('/');
     }
   };
 
@@ -160,7 +156,7 @@ const Registro = () => {
             <h2 className="mb-4 text-center">Crear Cuenta</h2>
             <form id="registerForm" onSubmit={handleSubmit} noValidate>
               
-              {/* Campo Nombre */}
+              {/* Campo para nombre */}
               <div className="mb-3">
                 <label htmlFor="registerNombre" className="form-label">Nombre</label>
                 <input 
@@ -178,7 +174,7 @@ const Registro = () => {
                 <div className="invalid-feedback">Por favor, ingresa tu nombre.</div>
               </div>
 
-              {/* Campo Apellido */}
+              {/* Campo para apellido */}
               <div className="mb-3">
                 <label htmlFor="registerApellido" className="form-label">Apellido</label>
                 <input 
@@ -196,7 +192,7 @@ const Registro = () => {
                 <div className="invalid-feedback">Por favor, ingresa tu apellido.</div>
               </div>
 
-              {/* Campo Género */}
+              {/* Campo para genero */}
               <div className="mb-3">
                 <label htmlFor="genero" className="form-label">Género</label>
                 <select 
@@ -219,7 +215,7 @@ const Registro = () => {
                 <div className="invalid-feedback">Por favor, selecciona un género.</div>
               </div>
 
-              {/* Campo Correo */}
+              {/* Campo para correo */}
               <div className="mb-3">
                 <label htmlFor="registerCorreo" className="form-label">Correo electrónico</label>
                 <input 
@@ -237,7 +233,7 @@ const Registro = () => {
                 <div className="invalid-feedback">Por favor, ingresa un correo válido.</div>
               </div>
 
-              {/* Campo Contraseña */}
+              {/* Campo para contraseña */}
               <div className="mb-3">
                 <label htmlFor="registerPassword" className="form-label">Contraseña</label>
                 <input 
@@ -255,7 +251,7 @@ const Registro = () => {
                 <div className="invalid-feedback">Por favor, ingresa una contraseña.</div>
               </div>
 
-              {/* Campo Confirmar Contraseña */}
+              {/* Campo para confirmar contraseña */}
               <div className="mb-3">
                 <label htmlFor="registerPasswordConfirm" className="form-label">Confirmar contraseña</label>
                 <input 

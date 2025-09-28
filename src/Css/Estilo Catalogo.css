@@ -1,4 +1,3 @@
-/* Catalogo y colecciones*/
 .catalogo, .colecciones {
   padding-top: 3rem;
   padding-bottom: 3rem;
@@ -30,7 +29,7 @@
   color: #555;
 }
 
-/* Tarjeta de productos*/
+
 .catalogo .card,
 .colecciones .card {
   border: 1px solid #ddd;
@@ -71,7 +70,6 @@
   font-weight: 600;
 }
 
-/* Estado de stock*/
 .stock {
   display: inline-block;
   font-size: 0.9rem;
@@ -85,7 +83,6 @@
   color: #fff;
 }
 
-/* Botones*/
 .catalogo .btn-primary,
 .colecciones .btn-primary {
   background-color: #0d6efd; 
@@ -127,7 +124,6 @@
   color: #555;
 }
 
-/* Tarjetas catalogo */
 .catalogo .card {
   border: 1px solid #ddd;
   border-radius: 10px;
@@ -164,7 +160,6 @@
 }
 
 
-/* Estado de stock */
 .stock {
   display: inline-block;
   font-size: 0.9rem;
@@ -178,7 +173,6 @@
   color: #fff;
 }
 
-/* Botones */
 .catalogo .btn-primary {
   background-color: #0d6efd; 
   border: none;

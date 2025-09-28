@@ -21,7 +21,7 @@ const Login = () => {
     return '';
   };
 
-  // Validar contraseña fuerte
+  // Validar contraseña
   const validarPassword = (value) => {
     const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
     if (value.trim() === '') {
@@ -32,12 +32,10 @@ const Login = () => {
     return '';
   };
 
-  // Manejar cambios en inputs
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
 
-    // Validación en tiempo real
     let error = '';
     if (name === 'correo') {
       error = validarCorreoElectronico(value);
@@ -48,7 +46,6 @@ const Login = () => {
     setErrors(prev => ({ ...prev, [name]: error }));
   };
 
-  // Manejar envío del formulario
   const handleSubmit = (e) => {
     e.preventDefault();
     
@@ -66,7 +63,7 @@ const Login = () => {
     if (correoValido && passValida) {
       alert('Sesión iniciada correctamente');
       setFormData({ correo: '', password: '' });
-      navigate('/'); // Redirige al inicio
+      navigate('/');
     }
   };
 

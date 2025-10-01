@@ -1,4 +1,3 @@
-/* src/index.css - Versión limpia */
 * {
   box-sizing: border-box;
 }
@@ -20,13 +19,11 @@ html {
   min-height: 100vh;
 }
 
-/* Reset básico para enlaces */
 a {
   color: inherit;
   text-decoration: none;
 }
 
-/* Reset básico para botones */
 button {
   font-family: inherit;
   cursor: pointer;

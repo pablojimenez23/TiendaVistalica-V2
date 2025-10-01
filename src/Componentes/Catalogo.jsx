@@ -161,7 +161,6 @@ const Catalogo = () => {
     setCategoriaActiva(categoria);
   };
 
-  // Función para obtener productos filtrados
   const getProductosFiltrados = () => {
     if (categoriaActiva === 'todos') {
       return Object.entries(productos).flatMap(([categoria, items]) => 
@@ -171,7 +170,6 @@ const Catalogo = () => {
     return productos[categoriaActiva]?.map(item => ({ ...item, categoria: categoriaActiva })) || [];
   };
 
-  // Componente para tarjeta de producto
   const ProductCard = ({ producto }) => (
     <div className="col-md-4" key={producto.id}>
       <div className="card">
@@ -202,7 +200,7 @@ const Catalogo = () => {
         Explora nuestra selección de ropa, calzado y accesorios pensados para acompañar tu estilo en cada ocasión.
       </p>
 
-      {/* Filtro por categorías */}
+      {/* Filtro por categorias */}
       <div className="text-center mb-4">
         {botonesFiltro.map((boton) => (
           <button 

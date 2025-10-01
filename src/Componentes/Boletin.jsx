@@ -17,7 +17,6 @@ const Boletin = () => {
     e.preventDefault();
     const emailTrimmed = email.trim();
     
-    // Limpiar error previo
     quitarError();
 
     if (emailTrimmed === '') {
@@ -26,13 +25,12 @@ const Boletin = () => {
       mostrarError('Por favor, ingresa un correo con formato válido.');
     } else {
       alert('¡Suscripción realizada correctamente!');
-      setEmail(""); // Limpiar el campo después del éxito
+      setEmail("");
     }
   };
 
   const handleInputChange = (e) => {
     setEmail(e.target.value);
-    // Quitar error cuando el usuario empiece a escribir
     if (error) {
       quitarError();
     }

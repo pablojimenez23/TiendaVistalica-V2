@@ -1,4 +1,3 @@
-// src/Componentes/Colecciones.jsx
 import React, { useState } from "react";
 import "../Css/Estilo.css";
 import "../Css/Estilo Catalogo.css";
@@ -16,7 +15,6 @@ const Colecciones = () => {
     { marca: 'versace', label: 'Versace' }
   ];
 
-  // Datos de productos organizados por marca
   const productosPorMarca = {
     'louis-vuitton': [
       { 
@@ -162,7 +160,6 @@ const Colecciones = () => {
     setMarcaActiva(marca);
   };
 
-  // Función para obtener productos filtrados por marca
   const getProductosFiltrados = () => {
     if (marcaActiva === 'todos') {
       return Object.entries(productosPorMarca).flatMap(([marca, items]) => 
@@ -172,7 +169,6 @@ const Colecciones = () => {
     return productosPorMarca[marcaActiva]?.map(item => ({ ...item, marca: marcaActiva })) || [];
   };
 
-  // Componente para tarjeta de producto
   const ProductCard = ({ producto }) => (
     <div className="col-md-4" key={producto.id}>
       <div className="card">
@@ -222,7 +218,7 @@ const Colecciones = () => {
         ))}
       </div>
 
-      {/* Mensaje cuando no hay productos */}
+      {/* Mensaje cuando no hay productos o stock */}
       {getProductosFiltrados().length === 0 && (
         <div className="text-center py-5">
           <p className="text-muted">No hay productos disponibles para esta marca.</p>

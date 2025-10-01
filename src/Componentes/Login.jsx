@@ -10,7 +10,7 @@ const Login = () => {
   });
   const [errors, setErrors] = useState({});
 
-  // Validar correo electrónico
+  // Validar el correo electrónico
   const validarCorreoElectronico = (value) => {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (value.trim() === '') {
@@ -21,7 +21,7 @@ const Login = () => {
     return '';
   };
 
-  // Validar contraseña
+  // Validar la contraseña
   const validarPassword = (value) => {
     const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
     if (value.trim() === '') {

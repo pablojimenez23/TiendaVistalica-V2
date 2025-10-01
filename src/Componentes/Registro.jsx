@@ -156,7 +156,7 @@ const Registro = () => {
             <h2 className="mb-4 text-center">Crear Cuenta</h2>
             <form id="registerForm" onSubmit={handleSubmit} noValidate>
               
-              {/* Campo para nombre */}
+              {/* Campo para el nombre */}
               <div className="mb-3">
                 <label htmlFor="registerNombre" className="form-label">Nombre</label>
                 <input 
@@ -174,7 +174,7 @@ const Registro = () => {
                 <div className="invalid-feedback">Por favor, ingresa tu nombre.</div>
               </div>
 
-              {/* Campo para apellido */}
+              {/* Campo para el apellido */}
               <div className="mb-3">
                 <label htmlFor="registerApellido" className="form-label">Apellido</label>
                 <input 
@@ -192,7 +192,7 @@ const Registro = () => {
                 <div className="invalid-feedback">Por favor, ingresa tu apellido.</div>
               </div>
 
-              {/* Campo para genero */}
+              {/* Campo para el genero */}
               <div className="mb-3">
                 <label htmlFor="genero" className="form-label">Género</label>
                 <select 
@@ -215,7 +215,7 @@ const Registro = () => {
                 <div className="invalid-feedback">Por favor, selecciona un género.</div>
               </div>
 
-              {/* Campo para correo */}
+              {/* Campo para el correo */}
               <div className="mb-3">
                 <label htmlFor="registerCorreo" className="form-label">Correo electrónico</label>
                 <input 
@@ -233,7 +233,7 @@ const Registro = () => {
                 <div className="invalid-feedback">Por favor, ingresa un correo válido.</div>
               </div>
 
-              {/* Campo para contraseña */}
+              {/* Campo para la contraseña */}
               <div className="mb-3">
                 <label htmlFor="registerPassword" className="form-label">Contraseña</label>
                 <input 
@@ -251,7 +251,7 @@ const Registro = () => {
                 <div className="invalid-feedback">Por favor, ingresa una contraseña.</div>
               </div>
 
-              {/* Campo para confirmar contraseña */}
+              {/* Campo para confirmar la contraseña */}
               <div className="mb-3">
                 <label htmlFor="registerPasswordConfirm" className="form-label">Confirmar contraseña</label>
                 <input 

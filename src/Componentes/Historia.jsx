@@ -2,6 +2,8 @@ import React from "react";
 import "../Css/Estilo.css";
 import "../Css/Historia.css";
 
+//comentarios prueba
+
 const Historia = () => {
   const hitos = [
     {

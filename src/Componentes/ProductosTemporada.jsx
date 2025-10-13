@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import "../Css/Estilo.css";
 
 const ProductosTemporada = () => {
@@ -20,7 +21,7 @@ const ProductosTemporada = () => {
                   <p className="card-text text-primary fw-bold mb-0">$24.990</p>
                   <p className="card-text old-price mb-0">$34.990</p>
                 </div>
-                <a href="Catalogo.html" className="btn btn-primary mt-3">Ver más</a>
+                <Link to="/catalogo" className="btn btn-primary mt-3">Ver más</Link>
               </div>
             </div>
           </div>
@@ -38,7 +39,7 @@ const ProductosTemporada = () => {
                   <p className="card-text text-primary fw-bold mb-0">$39.990</p>
                   <p className="card-text old-price mb-0">$59.990</p>
                 </div>
-                <a href="Catalogo.html" className="btn btn-primary mt-3">Ver más</a>
+                <Link to="/catalogo" className="btn btn-primary mt-3">Ver más</Link>
               </div>
             </div>
           </div>
@@ -56,7 +57,7 @@ const ProductosTemporada = () => {
                   <p className="card-text text-primary fw-bold mb-0">$29.990</p>
                   <p className="card-text old-price mb-0">$39.990</p>
                 </div>
-                <a href="Catalogo.html" className="btn btn-primary mt-3">Ver más</a>
+                <Link to="/catalogo" className="btn btn-primary mt-3">Ver más</Link>
               </div>
             </div>
           </div>

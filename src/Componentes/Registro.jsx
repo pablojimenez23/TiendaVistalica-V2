@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import "../Css/Estilo.css";
@@ -111,7 +112,6 @@ const Registro = () => {
     setErrors(prev => ({ ...prev, [name]: error }));
   };
 
-  // Manejar envios del formulario
   const handleSubmit = (e) => {
     e.preventDefault();
     
@@ -135,7 +135,45 @@ const Registro = () => {
                        !correoError && !passwordError && !passwordConfirmError;
 
     if (formValido) {
+      // Obtener usuarios existentes del localStorage
+      const usuariosExistentes = JSON.parse(localStorage.getItem('usuarios')) || [];
+      
+      // Verificar si el correo ya está registrado
+      const correoExiste = usuariosExistentes.some(user => user.correo === formData.correo);
+      
+      if (correoExiste) {
+        setErrors(prev => ({ ...prev, correo: 'Este correo ya está registrado.' }));
+        return;
+      }
+      
+      // Crear objeto de usuario 
+      const nuevoUsuario = {
+        id: Date.now(),
+        nombre: formData.nombre,
+        apellido: formData.apellido,
+        genero: formData.genero,
+        correo: formData.correo,
+        password: formData.password,
+        fechaRegistro: new Date().toISOString()
+      };
+      
+      // Agregar nuevo usuario al array
+      usuariosExistentes.push(nuevoUsuario);
+      
+      // Guardar en localStorage
+      localStorage.setItem('usuarios', JSON.stringify(usuariosExistentes));
+      
+      // Guardar sesion activa
+      localStorage.setItem('usuarioActivo', JSON.stringify({
+        id: nuevoUsuario.id,
+        nombre: nuevoUsuario.nombre,
+        apellido: nuevoUsuario.apellido,
+        correo: nuevoUsuario.correo,
+        genero: nuevoUsuario.genero
+      }));
+      
       alert('Cuenta registrada correctamente');
+      
       setFormData({
         nombre: '',
         apellido: '',
@@ -144,6 +182,7 @@ const Registro = () => {
         password: '',
         passwordConfirm: ''
       });
+      
       navigate('/');
     }
   };
@@ -251,7 +290,7 @@ const Registro = () => {
                 <div className="invalid-feedback">Por favor, ingresa una contraseña.</div>
               </div>
 
-              {/* Campo para confirmar la contraseña */}
+              {/* Campo para confirmar contraseña */}
               <div className="mb-3">
                 <label htmlFor="registerPasswordConfirm" className="form-label">Confirmar contraseña</label>
                 <input 
@@ -268,12 +307,10 @@ const Registro = () => {
                 )}
                 <div className="invalid-feedback">Por favor, confirma tu contraseña.</div>
               </div>
-
-              <button type="submit" className="btn btn-success w-100">
+              <button type="submit" className="btn btn-primary w-100">
                 Crear Cuenta
               </button>
             </form>
-            
             <div className="text-center mt-3">
               <Link to="/login">¿Ya tienes cuenta? Iniciar sesión</Link>
             </div>

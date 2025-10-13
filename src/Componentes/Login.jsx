@@ -10,7 +10,7 @@ const Login = () => {
   });
   const [errors, setErrors] = useState({});
 
-  // Validar el correo electrónico
+  // Validar el correo
   const validarCorreoElectronico = (value) => {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (value.trim() === '') {
@@ -23,11 +23,8 @@ const Login = () => {
 
   // Validar la contraseña
   const validarPassword = (value) => {
-    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
     if (value.trim() === '') {
       return 'La contraseña es obligatoria.';
-    } else if (!regex.test(value.trim())) {
-      return 'Debe tener mínimo 8 caracteres, al menos una mayúscula, una minúscula y un número.';
     }
     return '';
   };
@@ -61,9 +58,39 @@ const Login = () => {
     const passValida = !passwordError;
 
     if (correoValido && passValida) {
-      alert('Sesión iniciada correctamente');
-      setFormData({ correo: '', password: '' });
-      navigate('/');
+      // Obtener usuarios
+      const usuariosGuardados = JSON.parse(localStorage.getItem('usuarios')) || [];
+      
+      // Buscar usuario
+      const usuarioEncontrado = usuariosGuardados.find(
+        user => user.correo === formData.correo && user.password === formData.password
+      );
+
+      if (usuarioEncontrado) {
+        // Guardar sesion activa
+        const usuarioActivo = {
+          id: usuarioEncontrado.id,
+          nombre: usuarioEncontrado.nombre,
+          apellido: usuarioEncontrado.apellido,
+          correo: usuarioEncontrado.correo,
+          genero: usuarioEncontrado.genero
+        };
+
+        localStorage.setItem('usuarioActivo', JSON.stringify(usuarioActivo));
+        
+        alert(`Bienvenido ${usuarioEncontrado.nombre} ${usuarioEncontrado.apellido}`);
+        
+        setFormData({ correo: '', password: '' });
+        
+        // Forzar recarga para actualizar el Navbar
+        window.location.href = '/';
+      } else {
+        // Credenciales incorrectas
+        setErrors({
+          correo: '',
+          password: 'Correo o contraseña incorrectos.'
+        });
+      }
     }
   };
 
@@ -118,7 +145,7 @@ const Login = () => {
             </form>
             
             <div className="text-center mt-3">
-              <Link to="/registro">¿No tiene una cuenta?</Link>
+              <Link to="/registro">¿No tienes una cuenta? Regístrate aquí</Link>
             </div>
           </div>
         </div>

@@ -1,10 +1,38 @@
-import React from "react";
-import { Link, useLocation } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { CarritoBoton } from "./Carrito";
 import "../Css/Estilo.css";
 
 const Navbar = () => {
   const location = useLocation();
+  const navigate = useNavigate();
+  const [usuarioActivo, setUsuarioActivo] = useState(null);
+
+  // Verificar usuarios en el local storage
+  useEffect(() => {
+    const verificarUsuario = () => {
+      const usuario = localStorage.getItem('usuarioActivo');
+      if (usuario) {
+        setUsuarioActivo(JSON.parse(usuario));
+      }
+    };
+
+    verificarUsuario();
+
+    // Escuchar cambios en localStorage
+    window.addEventListener('storage', verificarUsuario);
+    
+    return () => {
+      window.removeEventListener('storage', verificarUsuario);
+    };
+  }, [location]);
+
+  // Funcion para cerrar sesion
+  const cerrarSesion = () => {
+    localStorage.removeItem('usuarioActivo');
+    setUsuarioActivo(null);
+    navigate('/');
+  };
 
   return (
     <nav className="navbar navbar-expand-lg shadow-sm sticky-top custom-navbar">
@@ -13,12 +41,12 @@ const Navbar = () => {
           <img src="/Imagenes/Logo Vistalica.png" alt="Logo Vistalica" height="40" />
         </Link>
         <button 
-          className="navbar-toggler" 
-          type="button" 
-          data-bs-toggle="collapse" 
+          className="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
           data-bs-target="#barraNavegacion"
-          aria-controls="barraNavegacion" 
-          aria-expanded="false" 
+          aria-controls="barraNavegacion"
+          aria-expanded="false"
           aria-label="Mostrar/Ocultar navegación"
         >
           <span className="navbar-toggler-icon"></span>
@@ -27,7 +55,7 @@ const Navbar = () => {
           <ul className="navbar-nav me-auto mb-2 mb-lg-0">
             <li className="nav-item">
               <Link 
-                className={`nav-link ${location.pathname === '/' || location.pathname === '/inicio' ? 'active' : ''}`} 
+                className={`nav-link ${location.pathname === '/' || location.pathname === '/inicio' ? 'active' : ''}`}
                 to="/"
               >
                 Inicio
@@ -43,10 +71,10 @@ const Navbar = () => {
             </li>
             <li className="nav-item">
               <Link 
-                className={`nav-link ${location.pathname === '/colecciones' ? 'active' : ''}`}
-                to="/colecciones"
+                className={`nav-link ${location.pathname === '/historia' ? 'active' : ''}`}
+                to="/historia"
               >
-                Colecciones
+                Historia
               </Link>
             </li>
             <li className="nav-item">
@@ -66,19 +94,61 @@ const Navbar = () => {
               </Link>
             </li>
           </ul>
-          <form className="d-flex">
+          <form className="d-flex align-items-center">
             <input 
-              className="form-control me-2" 
-              placeholder="Buscar productos..." 
+              className="form-control me-2"
+              placeholder="Buscar productos..."
               aria-label="Buscar"
             />
             <button className="btn btn-outline-success me-2" title="Buscar">
               <i className="bi bi-search"></i>
             </button>
             <CarritoBoton />
-            <Link to="/login" className="btn btn-outline-dark me-2" title="Usuario">
-              <i className="bi bi-person"></i>
-            </Link>         
+            
+            {usuarioActivo ? (
+              <div className="dropdown">
+                <button 
+                  className="btn btn-outline-dark dropdown-toggle d-flex align-items-center" 
+                  type="button" 
+                  id="dropdownUsuario" 
+                  data-bs-toggle="dropdown" 
+                  aria-expanded="false"
+                >
+                  <i className="bi bi-person-fill me-1"></i>
+                  <span>{usuarioActivo.nombre} {usuarioActivo.apellido}</span>
+                </button>
+                <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownUsuario">
+                  <li>
+                    <span className="dropdown-item-text">
+                      <strong>{usuarioActivo.nombre} {usuarioActivo.apellido}</strong>
+                      <br />
+                      <small className="text-muted">{usuarioActivo.correo}</small>
+                    </span>
+                  </li>
+                  <li><hr className="dropdown-divider" /></li>
+                  <li>
+                    <Link className="dropdown-item" to="/perfil">
+                      <i className="bi bi-person me-2"></i>Mi Perfil
+                    </Link>
+                  </li>
+                  <li>
+                    <Link className="dropdown-item" to="/mis-pedidos">
+                      <i className="bi bi-box-seam me-2"></i>Mis Pedidos
+                    </Link>
+                  </li>
+                  <li><hr className="dropdown-divider" /></li>
+                  <li>
+                    <button className="dropdown-item text-danger" onClick={cerrarSesion}>
+                      <i className="bi bi-box-arrow-right me-2"></i>Cerrar Sesión
+                    </button>
+                  </li>
+                </ul>
+              </div>
+            ) : (
+              <Link to="/login" className="btn btn-outline-dark me-2" title="Usuario">
+                <i className="bi bi-person"></i>
+              </Link>
+            )}
           </form>
         </div>
       </div>

@@ -1,12 +1,21 @@
-import React, { useState, createContext, useContext } from 'react';
+import React, { useState, createContext, useContext, useEffect } from 'react';
 import "../Css/Estilo.css";
 import "../Css/Estilo Carrito Compras.css";
 
 const CarritoContext = createContext();
 
 export const CarritoProvider = ({ children }) => {
-  const [carrito, setCarrito] = useState([]);
+  // Cargar carrito desde localStorage al iniciar
+  const [carrito, setCarrito] = useState(() => {
+    const guardado = localStorage.getItem('carrito');
+    return guardado ? JSON.parse(guardado) : [];
+  });
   const [isOpen, setIsOpen] = useState(false);
+
+  // Guardar carrito en localStorage cada vez que cambie
+  useEffect(() => {
+    localStorage.setItem('carrito', JSON.stringify(carrito));
+  }, [carrito]);
 
   const agregarProducto = (producto) => {
     setCarrito(prevCarrito => {

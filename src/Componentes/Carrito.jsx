@@ -1,18 +1,18 @@
 import React, { useState, createContext, useContext, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import "../Css/Estilo.css";
 import "../Css/Estilo Carrito Compras.css";
+import { useAuth } from "./AuthContext"; // Asegúrate que el nombre del archivo sea correcto
 
 const CarritoContext = createContext();
 
 export const CarritoProvider = ({ children }) => {
-  // Cargar carrito desde localStorage al iniciar
   const [carrito, setCarrito] = useState(() => {
     const guardado = localStorage.getItem('carrito');
     return guardado ? JSON.parse(guardado) : [];
   });
   const [isOpen, setIsOpen] = useState(false);
 
-  // Guardar carrito en localStorage cada vez que cambie
   useEffect(() => {
     localStorage.setItem('carrito', JSON.stringify(carrito));
   }, [carrito]);
@@ -20,7 +20,6 @@ export const CarritoProvider = ({ children }) => {
   const agregarProducto = (producto) => {
     setCarrito(prevCarrito => {
       const productoExistente = prevCarrito.find(item => item.id === producto.id);
-      
       if (productoExistente) {
         return prevCarrito.map(item =>
           item.id === producto.id
@@ -126,6 +125,9 @@ const Carrito = () => {
     setIsOpen
   } = useCarrito();
 
+  const { usuario } = useAuth(); // Debe ser "usuario", no "usuarioActivo"
+  const navigate = useNavigate();
+
   const formatearPrecio = (precio) => {
     return new Intl.NumberFormat('es-CL', {
       style: 'currency',
@@ -135,7 +137,14 @@ const Carrito = () => {
 
   const handleCheckout = () => {
     if (carrito.length === 0) return;
-    
+
+    if (!usuario) {
+      alert('Debes iniciar sesión para poder finalizar tu compra');
+      setIsOpen(false);
+      navigate('/login');
+      return;
+    }
+
     alert(`Procesando compra por ${formatearPrecio(obtenerTotal())}`);
     vaciarCarrito();
     setIsOpen(false);

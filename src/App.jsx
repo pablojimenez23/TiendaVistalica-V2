@@ -16,6 +16,7 @@ import Impacto from "./Componentes/Impacto";
 import Contacto from "./Componentes/Contacto";
 import { CarritoProvider } from "./Componentes/Carrito";
 import Carrito from "./Componentes/Carrito";
+import { AuthProvider } from "./Componentes/AuthContext";
 
 const Home = () => (
   <>
@@ -35,27 +36,29 @@ const Home = () => (
 
 function App() {
   return (
-    <CarritoProvider>
-      <Router>
-        <div className="App">
-          <Navbar />
-          
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/inicio" element={<Home />} />
-            <Route path="/catalogo" element={<Catalogo />} />
-            <Route path="/historia" element={<Historia />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/registro" element={<Registro />} />
-            <Route path="/impacto" element={<Impacto />} />
-            <Route path="/contacto" element={<Contacto />} />
-          </Routes>
-          
-          <Footer />
-          <Carrito />
-        </div>
-      </Router>
-    </CarritoProvider>
+    <AuthProvider>
+      <CarritoProvider>
+        <Router>
+          <div className="App">
+            <Navbar />
+            
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/inicio" element={<Home />} />
+              <Route path="/catalogo" element={<Catalogo />} />
+              <Route path="/historia" element={<Historia />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/registro" element={<Registro />} />
+              <Route path="/impacto" element={<Impacto />} />
+              <Route path="/contacto" element={<Contacto />} />
+            </Routes>
+            
+            <Footer />
+            <Carrito />
+          </div>
+        </Router>
+      </CarritoProvider>
+    </AuthProvider>
   );
 }
 

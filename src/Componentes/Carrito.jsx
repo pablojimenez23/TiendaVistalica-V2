@@ -2,7 +2,7 @@ import React, { useState, createContext, useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import "../Css/Estilo.css";
 import "../Css/Estilo Carrito Compras.css";
-import { useAuth } from "./AuthContext"; // Asegúrate que el nombre del archivo sea correcto
+import { useAuth } from "./AuthContext";
 
 const CarritoContext = createContext();
 

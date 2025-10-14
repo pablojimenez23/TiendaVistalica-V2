@@ -6,11 +6,12 @@ import "../Css/Estilo.css";
 const DetalleProducto = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { agregarProducto } = useCarrito();
+  const { agregarProducto, obtenerStock } = useCarrito();
   const [producto, setProducto] = useState(null);
   const [tallaSeleccionada, setTallaSeleccionada] = useState("");
   const [cantidad, setCantidad] = useState(1);
-  const [stockActual, setStockActual] = useState(0);
+  
+  const stockActual = producto ? obtenerStock(producto.id) : 0;
 
   const productosCompletos = {
     1: {
@@ -235,7 +236,6 @@ const DetalleProducto = () => {
     const productoEncontrado = productosCompletos[parseInt(id)];
     if (productoEncontrado) {
       setProducto(productoEncontrado);
-      setStockActual(productoEncontrado.stock);
       if (productoEncontrado.tallas && productoEncontrado.tallas.length > 0) {
         setTallaSeleccionada(productoEncontrado.tallas[0]);
       }
@@ -249,7 +249,7 @@ const DetalleProducto = () => {
       for (let i = 0; i < cantidad; i++) {
         agregarProducto(producto);
       }
-      setStockActual(stockActual - cantidad);
+      descontarStock(producto.id, cantidad);
       alert(`${cantidad} ${producto.nombre}(s) agregado(s) al carrito`);
       setCantidad(1);
     }
@@ -294,12 +294,12 @@ const DetalleProducto = () => {
           </div>
         </div>
 
-        {/*Detalle producto*/}
+        {/*Informacion del producto*/}
         <div className="col-md-6">
           <h1 className="mb-3">{producto.nombre}</h1>
           <h2 className="text-primary mb-4">{producto.precio}</h2>
 
-          {/*Estado de stock*/}
+          {/* Estado de stock (sin mostrar cantidad) */}
           <div className="mb-4">
             {stockActual > 0 ? (
               <span className="badge bg-success fs-6">
@@ -314,7 +314,7 @@ const DetalleProducto = () => {
             )}
           </div>
 
-          {/*Detalles*/}
+          {/*Descripcion*/}
           <div className="mb-4">
             <h5>Descripción</h5>
             <p className="text-muted">{producto.descripcion}</p>
@@ -339,7 +339,7 @@ const DetalleProducto = () => {
             </div>
           )}
 
-          {/*Cantidad*/}
+          {/* Cantidad*/}
           {stockActual > 0 && (
             <div className="mb-4">
               <h5>Cantidad</h5>
@@ -363,7 +363,7 @@ const DetalleProducto = () => {
             </div>
           )}
 
-          {/*Boton de carrito*/}
+          {/*Agregar al carrito*/}
           <div className="mb-4">
             <button 
               className={`btn ${stockActual > 0 ? 'btn-primary' : 'btn-secondary'} w-100 py-3`}
@@ -375,7 +375,7 @@ const DetalleProducto = () => {
             </button>
           </div>
 
-          {/*Detalles adicionales*/}
+          {/* Detalles adicionales */}
           <div className="card bg-light">
             <div className="card-body">
               <h5 className="card-title">Detalles del Producto</h5>

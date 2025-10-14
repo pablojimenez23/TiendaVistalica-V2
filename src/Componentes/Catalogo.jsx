@@ -6,7 +6,7 @@ import "../Css/Estilo Catalogo.css";
 const Catalogo = () => {
   const navigate = useNavigate();
   const [categoriaActiva, setCategoriaActiva] = useState('todos');
-  const { agregarProducto } = useCarrito();
+  const { agregarProducto, tieneStock } = useCarrito();
 
   const botonesFiltro = [
     { categoria: 'todos', label: 'Todos' },
@@ -24,22 +24,19 @@ const Catalogo = () => {
         id: 1, 
         nombre: "Sweater Clásico", 
         precio: "$25.000", 
-        imagen: "/Imagenes/Sweater Clasico.jpg", 
-        stock: true 
+        imagen: "/Imagenes/Sweater Clasico.jpg"
       },
       { 
         id: 2, 
         nombre: "Polerón Deportivo", 
         precio: "$28.000", 
-        imagen: "/Imagenes/Poleron Deportivo.jpg", 
-        stock: false 
+        imagen: "/Imagenes/Poleron Deportivo.jpg"
       },
       { 
         id: 3, 
         nombre: "Sweater Moderno", 
         precio: "$30.000", 
-        imagen: "/Imagenes/Sweater Moderno.jpg", 
-        stock: true 
+        imagen: "/Imagenes/Sweater Moderno.jpg"
       }
     ],
     pantalones: [
@@ -47,22 +44,19 @@ const Catalogo = () => {
         id: 4, 
         nombre: "Pantalón Casual", 
         precio: "$22.000", 
-        imagen: "/Imagenes/Pantalon Gucci.jpg", 
-        stock: true 
+        imagen: "/Imagenes/Pantalon Gucci.jpg"
       },
       { 
         id: 5, 
         nombre: "Jeans Clásico", 
         precio: "$26.000", 
-        imagen: "/Imagenes/Jeans Casuales Gucci.jpg", 
-        stock: false 
+        imagen: "/Imagenes/Jeans Casuales Gucci.jpg"
       },
       { 
         id: 6, 
         nombre: "Pantalón Formal", 
         precio: "$32.000", 
-        imagen: "/Imagenes/Pantalon Formal Gucci.jpg", 
-        stock: true 
+        imagen: "/Imagenes/Pantalon Formal Gucci.jpg"
       }
     ],
     vestidos: [
@@ -70,22 +64,19 @@ const Catalogo = () => {
         id: 7, 
         nombre: "Vestido Casual", 
         precio: "$35.000", 
-        imagen: "/Imagenes/Vestido Casual.jpg", 
-        stock: true 
+        imagen: "/Imagenes/Vestido Casual.jpg"
       },
       { 
         id: 8, 
         nombre: "Vestido de Noche", 
         precio: "$50.000", 
-        imagen: "/Imagenes/Vestido Nocturno.jpg", 
-        stock: false 
+        imagen: "/Imagenes/Vestido Nocturno.jpg"
       },
       { 
         id: 9, 
         nombre: "Vestido Verano", 
         precio: "$38.000", 
-        imagen: "/Imagenes/Vestido Verano.jpg", 
-        stock: true 
+        imagen: "/Imagenes/Vestido Verano.jpg"
       }
     ],
     zapatillas: [
@@ -93,22 +84,19 @@ const Catalogo = () => {
         id: 10, 
         nombre: "Zapatilla Urbana", 
         precio: "$40.000", 
-        imagen: "/Imagenes/Zapatillas Urbanas VC.jpg", 
-        stock: true 
+        imagen: "/Imagenes/Zapatillas Urbanas VC.jpg"
       },
       { 
         id: 11, 
         nombre: "Zapatilla Deportiva", 
         precio: "$42.000", 
-        imagen: "/Imagenes/Zapatillas Deportivas BC.jpg", 
-        stock: false 
+        imagen: "/Imagenes/Zapatillas Deportivas BC.jpg"
       },
       { 
         id: 12, 
         nombre: "Zapatilla Running", 
         precio: "$45.000", 
-        imagen: "/Imagenes/Zapatilla running BC.jpg", 
-        stock: true 
+        imagen: "/Imagenes/Zapatilla running BC.jpg"
       }
     ],
     carteras: [
@@ -116,22 +104,19 @@ const Catalogo = () => {
         id: 13, 
         nombre: "Cartera Clásica", 
         precio: "$28.000", 
-        imagen: "/Imagenes/Prada Cartera.jpg", 
-        stock: true 
+        imagen: "/Imagenes/Prada Cartera.jpg"
       },
       { 
         id: 14, 
         nombre: "Cartera de Mano", 
         precio: "$30.000", 
-        imagen: "/Imagenes/CarteraMano Prada.jpg", 
-        stock: false 
+        imagen: "/Imagenes/CarteraMano Prada.jpg"
       },
       { 
         id: 15, 
         nombre: "Cartera Elegante", 
         precio: "$33.000", 
-        imagen: "/Imagenes/Cartera Elegante Prada.jpg", 
-        stock: true 
+        imagen: "/Imagenes/Cartera Elegante Prada.jpg"
       }
     ],
     accesorios: [
@@ -139,22 +124,19 @@ const Catalogo = () => {
         id: 16, 
         nombre: "Collar Minimalista", 
         precio: "$15.000", 
-        imagen: "/Imagenes/Collar Versace.jpg", 
-        stock: true 
+        imagen: "/Imagenes/Collar Versace.jpg"
       },
       { 
         id: 17, 
         nombre: "Pulsera de Cuero", 
         precio: "$12.000", 
-        imagen: "/Imagenes/Pulsera Cuero Versace.jpg", 
-        stock: false 
+        imagen: "/Imagenes/Pulsera Cuero Versace.jpg"
       },
       { 
         id: 18, 
         nombre: "Aros Plateados", 
         precio: "$18.000", 
-        imagen: "/Imagenes/Aros Plateados versace.jfif", 
-        stock: true 
+        imagen: "/Imagenes/Aros Plateados versace.jfif"
       }
     ]
   };
@@ -176,35 +158,41 @@ const Catalogo = () => {
     navigate(`/producto/${producto.id}`);
   };
 
-  const ProductCard = ({ producto }) => (
-    <div className="col-md-4" key={producto.id}>
-      <div className="card" style={{ cursor: 'pointer' }}>
-        <div onClick={() => handleVerDetalle(producto)}>
-          <img 
-            src={producto.imagen} 
-            className="card-img-top" 
-            alt={producto.nombre}
-          />
-          <div className="card-body text-center">
-            <h5 className="card-title">{producto.nombre}</h5>
-            <p className="card-text">{producto.precio}</p>
+  const ProductCard = ({ producto }) => {
+    const hayStock = tieneStock(producto.id);
+    
+    return (
+      <div className="col-md-4" key={producto.id}>
+        <div className="card" style={{ cursor: 'pointer' }}>
+          <div onClick={() => handleVerDetalle(producto)}>
+            <img 
+              src={producto.imagen} 
+              className="card-img-top" 
+              alt={producto.nombre}
+            />
+            <div className="card-body text-center">
+              <h5 className="card-title">{producto.nombre}</h5>
+              <p className="card-text">{producto.precio}</p>
+            </div>
+          </div>
+          <div className="card-body text-center" style={{ paddingTop: 0 }}>
+            <button 
+              className={`btn ${hayStock ? 'btn-primary' : 'btn-sin-stock'}`}
+              disabled={!hayStock}
+              onClick={(e) => {
+                e.stopPropagation();
+                if (hayStock) {
+                  agregarProducto(producto);
+                }
+              }}
+            >
+              {hayStock ? 'Agregar al carrito' : 'Sin stock'}
+            </button>
           </div>
         </div>
-        <div className="card-body text-center" style={{ paddingTop: 0 }}>
-          <button 
-            className={`btn ${producto.stock ? 'btn-primary' : 'btn-sin-stock'}`}
-            disabled={!producto.stock}
-            onClick={(e) => {
-              e.stopPropagation();
-              if (producto.stock) agregarProducto(producto);
-            }}
-          >
-            {producto.stock ? 'Agregar al carrito' : 'Sin stock'}
-          </button>
-        </div>
       </div>
-    </div>
-  );
+    );
+  };
 
   return (
     <section className="container py-5 catalogo">
@@ -233,7 +221,7 @@ const Catalogo = () => {
         ))}
       </div>
 
-      {/* Mensaje cuando no hay productos */}
+      {/*Mensaje cuando no hay productos*/}
       {getProductosFiltrados().length === 0 && (
         <div className="text-center py-5">
           <p className="text-muted">No hay productos disponibles en esta categoría.</p>

@@ -6,18 +6,39 @@ import { useAuth } from "./AuthContext";
 
 const CarritoContext = createContext();
 
+const stockInicial = {
+  1: 15, 2: 0, 3: 8, 4: 12, 5: 0, 6: 10,
+  7: 6, 8: 0, 9: 9, 10: 14, 11: 0, 12: 11,
+  13: 7, 14: 0, 15: 5, 16: 20, 17: 0, 18: 15
+};
+
 export const CarritoProvider = ({ children }) => {
   const [carrito, setCarrito] = useState(() => {
     const guardado = localStorage.getItem('carrito');
     return guardado ? JSON.parse(guardado) : [];
   });
+  
+  const [stocks, setStocks] = useState(() => {
+    const stockGuardado = sessionStorage.getItem('stocks');
+    return stockGuardado ? JSON.parse(stockGuardado) : stockInicial;
+  });
+  
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
     localStorage.setItem('carrito', JSON.stringify(carrito));
   }, [carrito]);
 
+  useEffect(() => {
+    sessionStorage.setItem('stocks', JSON.stringify(stocks));
+  }, [stocks]);
+
   const agregarProducto = (producto) => {
+    if (stocks[producto.id] <= 0) {
+      alert('Producto sin stock');
+      return;
+    }
+
     setCarrito(prevCarrito => {
       const productoExistente = prevCarrito.find(item => item.id === producto.id);
       if (productoExistente) {
@@ -30,17 +51,51 @@ export const CarritoProvider = ({ children }) => {
         return [...prevCarrito, { ...producto, cantidad: 1 }];
       }
     });
+
+    setStocks(prev => ({
+      ...prev,
+      [producto.id]: prev[producto.id] - 1
+    }));
   };
 
   const quitarProducto = (id) => {
+    const producto = carrito.find(item => item.id === id);
+    if (producto) {
+      setStocks(prev => ({
+        ...prev,
+        [id]: prev[id] + producto.cantidad
+      }));
+    }
     setCarrito(prevCarrito => prevCarrito.filter(item => item.id !== id));
   };
 
   const actualizarCantidad = (id, nuevaCantidad) => {
+    const producto = carrito.find(item => item.id === id);
+    if (!producto) return;
+
+    const diferencia = nuevaCantidad - producto.cantidad;
+
+    if (diferencia > 0) {
+      if (stocks[id] < diferencia) {
+        alert('No hay suficiente stock disponible');
+        return;
+      }
+      setStocks(prev => ({
+        ...prev,
+        [id]: prev[id] - diferencia
+      }));
+    } else if (diferencia < 0) {
+      setStocks(prev => ({
+        ...prev,
+        [id]: prev[id] - diferencia
+      }));
+    }
+
     if (nuevaCantidad <= 0) {
       quitarProducto(id);
       return;
     }
+
     setCarrito(prevCarrito =>
       prevCarrito.map(item =>
         item.id === id ? { ...item, cantidad: nuevaCantidad } : item
@@ -49,6 +104,12 @@ export const CarritoProvider = ({ children }) => {
   };
 
   const vaciarCarrito = () => {
+    carrito.forEach(item => {
+      setStocks(prev => ({
+        ...prev,
+        [item.id]: prev[item.id] + item.cantidad
+      }));
+    });
     setCarrito([]);
   };
 
@@ -67,6 +128,14 @@ export const CarritoProvider = ({ children }) => {
     setIsOpen(!isOpen);
   };
 
+  const obtenerStock = (productoId) => {
+    return stocks[productoId] || 0;
+  };
+
+  const tieneStock = (productoId) => {
+    return stocks[productoId] > 0;
+  };
+
   const value = {
     carrito,
     isOpen,
@@ -77,7 +146,10 @@ export const CarritoProvider = ({ children }) => {
     obtenerTotal,
     obtenerCantidadTotal,
     toggleCarrito,
-    setIsOpen
+    setIsOpen,
+    obtenerStock,
+    tieneStock,
+    stocks
   };
 
   return (
@@ -125,7 +197,7 @@ const Carrito = () => {
     setIsOpen
   } = useCarrito();
 
-  const { usuario } = useAuth(); // Debe ser "usuario", no "usuarioActivo"
+  const { usuario } = useAuth();
   const navigate = useNavigate();
 
   const formatearPrecio = (precio) => {

@@ -16,13 +16,13 @@ export const AuthProvider = ({ children }) => {
     setCargando(false);
   }, []);
 
-  // Función para iniciar sesion
+  // Funcion para iniciar sesion
   const iniciarSesion = (datosUsuario) => {
     setUsuario(datosUsuario);
     localStorage.setItem('usuarioActivo', JSON.stringify(datosUsuario));
   };
 
-  // Función para cerrar sesion
+  // Funcion para cerrar sesion
   const cerrarSesion = () => {
     setUsuario(null);
     localStorage.removeItem('usuarioActivo');

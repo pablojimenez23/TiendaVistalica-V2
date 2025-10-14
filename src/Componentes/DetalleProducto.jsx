@@ -282,7 +282,7 @@ const DetalleProducto = () => {
       </button>
 
       <div className="row">
-        {/* Imagen del producto */}
+        {/*Imagen del producto*/}
         <div className="col-md-6">
           <div className="card">
             <img 

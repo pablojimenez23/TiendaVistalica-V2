@@ -1,8 +1,10 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useCarrito } from "./Carrito";
 import "../Css/Estilo Catalogo.css";
 
 const Catalogo = () => {
+  const navigate = useNavigate();
   const [categoriaActiva, setCategoriaActiva] = useState('todos');
   const { agregarProducto } = useCarrito();
 
@@ -170,21 +172,32 @@ const Catalogo = () => {
     return productos[categoriaActiva]?.map(item => ({ ...item, categoria: categoriaActiva })) || [];
   };
 
+  const handleVerDetalle = (producto) => {
+    navigate(`/producto/${producto.id}`);
+  };
+
   const ProductCard = ({ producto }) => (
     <div className="col-md-4" key={producto.id}>
-      <div className="card">
-        <img 
-          src={producto.imagen} 
-          className="card-img-top" 
-          alt={producto.nombre}
-        />
-        <div className="card-body text-center">
-          <h5 className="card-title">{producto.nombre}</h5>
-          <p className="card-text">{producto.precio}</p>
+      <div className="card" style={{ cursor: 'pointer' }}>
+        <div onClick={() => handleVerDetalle(producto)}>
+          <img 
+            src={producto.imagen} 
+            className="card-img-top" 
+            alt={producto.nombre}
+          />
+          <div className="card-body text-center">
+            <h5 className="card-title">{producto.nombre}</h5>
+            <p className="card-text">{producto.precio}</p>
+          </div>
+        </div>
+        <div className="card-body text-center" style={{ paddingTop: 0 }}>
           <button 
             className={`btn ${producto.stock ? 'btn-primary' : 'btn-sin-stock'}`}
             disabled={!producto.stock}
-            onClick={() => producto.stock && agregarProducto(producto)}
+            onClick={(e) => {
+              e.stopPropagation();
+              if (producto.stock) agregarProducto(producto);
+            }}
           >
             {producto.stock ? 'Agregar al carrito' : 'Sin stock'}
           </button>
@@ -200,7 +213,7 @@ const Catalogo = () => {
         Explora nuestra selección de ropa, calzado y accesorios pensados para acompañar tu estilo en cada ocasión.
       </p>
 
-      {/* Filtro por categorias */}
+      {/*Filtro categorias*/}
       <div className="text-center mb-4">
         {botonesFiltro.map((boton) => (
           <button 
@@ -213,7 +226,7 @@ const Catalogo = () => {
         ))}
       </div>
 
-      {/* Productos */}
+      {/*Productos*/}
       <div className="row g-4 mb-4">
         {getProductosFiltrados().map((producto) => (
           <ProductCard key={producto.id} producto={producto} />

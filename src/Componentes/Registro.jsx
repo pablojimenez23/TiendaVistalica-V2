@@ -1,10 +1,11 @@
-
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { useAuth } from "./AuthContext";
 import "../Css/Estilo.css";
 
 const Registro = () => {
   const navigate = useNavigate();
+  const { iniciarSesion } = useAuth();
   const [formData, setFormData] = useState({
     nombre: '',
     apellido: '',
@@ -112,6 +113,7 @@ const Registro = () => {
     setErrors(prev => ({ ...prev, [name]: error }));
   };
 
+  // Manejar envios del formulario
   const handleSubmit = (e) => {
     e.preventDefault();
     
@@ -138,7 +140,7 @@ const Registro = () => {
       // Obtener usuarios existentes del localStorage
       const usuariosExistentes = JSON.parse(localStorage.getItem('usuarios')) || [];
       
-      // Verificar si el correo ya está registrado
+      // Verificar si el correo ya existe
       const correoExiste = usuariosExistentes.some(user => user.correo === formData.correo);
       
       if (correoExiste) {
@@ -146,7 +148,7 @@ const Registro = () => {
         return;
       }
       
-      // Crear objeto de usuario 
+      // Crear objeto de usuario
       const nuevoUsuario = {
         id: Date.now(),
         nombre: formData.nombre,
@@ -160,17 +162,19 @@ const Registro = () => {
       // Agregar nuevo usuario al array
       usuariosExistentes.push(nuevoUsuario);
       
-      // Guardar en localStorage
+      // Guardar en local storage
       localStorage.setItem('usuarios', JSON.stringify(usuariosExistentes));
       
-      // Guardar sesion activa
-      localStorage.setItem('usuarioActivo', JSON.stringify({
+      // Crear objeto de usuario activo
+      const usuarioActivo = {
         id: nuevoUsuario.id,
         nombre: nuevoUsuario.nombre,
         apellido: nuevoUsuario.apellido,
         correo: nuevoUsuario.correo,
         genero: nuevoUsuario.genero
-      }));
+      };
+      
+      iniciarSesion(usuarioActivo);
       
       alert('Cuenta registrada correctamente');
       
@@ -195,7 +199,7 @@ const Registro = () => {
             <h2 className="mb-4 text-center">Crear Cuenta</h2>
             <form id="registerForm" onSubmit={handleSubmit} noValidate>
               
-              {/* Campo para el nombre */}
+              {/*Campo para el nombre*/}
               <div className="mb-3">
                 <label htmlFor="registerNombre" className="form-label">Nombre</label>
                 <input 
@@ -213,7 +217,7 @@ const Registro = () => {
                 <div className="invalid-feedback">Por favor, ingresa tu nombre.</div>
               </div>
 
-              {/* Campo para el apellido */}
+              {/*Campo para el apellido*/}
               <div className="mb-3">
                 <label htmlFor="registerApellido" className="form-label">Apellido</label>
                 <input 
@@ -231,7 +235,7 @@ const Registro = () => {
                 <div className="invalid-feedback">Por favor, ingresa tu apellido.</div>
               </div>
 
-              {/* Campo para el genero */}
+              {/*Campo para el genero*/}
               <div className="mb-3">
                 <label htmlFor="genero" className="form-label">Género</label>
                 <select 
@@ -254,7 +258,7 @@ const Registro = () => {
                 <div className="invalid-feedback">Por favor, selecciona un género.</div>
               </div>
 
-              {/* Campo para el correo */}
+              {/*Campo para el correo*/}
               <div className="mb-3">
                 <label htmlFor="registerCorreo" className="form-label">Correo electrónico</label>
                 <input 
@@ -272,7 +276,7 @@ const Registro = () => {
                 <div className="invalid-feedback">Por favor, ingresa un correo válido.</div>
               </div>
 
-              {/* Campo para la contraseña */}
+              {/*Campo para la contraseña*/}
               <div className="mb-3">
                 <label htmlFor="registerPassword" className="form-label">Contraseña</label>
                 <input 
@@ -290,7 +294,7 @@ const Registro = () => {
                 <div className="invalid-feedback">Por favor, ingresa una contraseña.</div>
               </div>
 
-              {/* Campo para confirmar contraseña */}
+              {/*Campo para confirmar la contraseña*/}
               <div className="mb-3">
                 <label htmlFor="registerPasswordConfirm" className="form-label">Confirmar contraseña</label>
                 <input 
@@ -307,10 +311,12 @@ const Registro = () => {
                 )}
                 <div className="invalid-feedback">Por favor, confirma tu contraseña.</div>
               </div>
+
               <button type="submit" className="btn btn-primary w-100">
                 Crear Cuenta
               </button>
             </form>
+            
             <div className="text-center mt-3">
               <Link to="/login">¿Ya tienes cuenta? Iniciar sesión</Link>
             </div>

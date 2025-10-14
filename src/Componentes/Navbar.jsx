@@ -1,36 +1,17 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useAuth } from "./AuthContext";
 import { CarritoBoton } from "./Carrito";
 import "../Css/Estilo.css";
 
 const Navbar = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const [usuarioActivo, setUsuarioActivo] = useState(null);
+  const { usuario, cerrarSesion } = useAuth();
 
-  // Verificar usuarios en el local storage
-  useEffect(() => {
-    const verificarUsuario = () => {
-      const usuario = localStorage.getItem('usuarioActivo');
-      if (usuario) {
-        setUsuarioActivo(JSON.parse(usuario));
-      }
-    };
-
-    verificarUsuario();
-
-    // Escuchar cambios en localStorage
-    window.addEventListener('storage', verificarUsuario);
-    
-    return () => {
-      window.removeEventListener('storage', verificarUsuario);
-    };
-  }, [location]);
-
-  // Funcion para cerrar sesion
-  const cerrarSesion = () => {
-    localStorage.removeItem('usuarioActivo');
-    setUsuarioActivo(null);
+  // Función para finalizar sesion
+  const handleCerrarSesion = () => {
+    cerrarSesion();
     navigate('/');
   };
 
@@ -105,7 +86,7 @@ const Navbar = () => {
             </button>
             <CarritoBoton />
             
-            {usuarioActivo ? (
+            {usuario ? (
               <div className="dropdown">
                 <button 
                   className="btn btn-outline-dark dropdown-toggle d-flex align-items-center" 
@@ -115,14 +96,14 @@ const Navbar = () => {
                   aria-expanded="false"
                 >
                   <i className="bi bi-person-fill me-1"></i>
-                  <span>{usuarioActivo.nombre} {usuarioActivo.apellido}</span>
+                  <span>{usuario.nombre} {usuario.apellido}</span>
                 </button>
                 <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownUsuario">
                   <li>
                     <span className="dropdown-item-text">
-                      <strong>{usuarioActivo.nombre} {usuarioActivo.apellido}</strong>
+                      <strong>{usuario.nombre} {usuario.apellido}</strong>
                       <br />
-                      <small className="text-muted">{usuarioActivo.correo}</small>
+                      <small className="text-muted">{usuario.correo}</small>
                     </span>
                   </li>
                   <li><hr className="dropdown-divider" /></li>
@@ -138,7 +119,7 @@ const Navbar = () => {
                   </li>
                   <li><hr className="dropdown-divider" /></li>
                   <li>
-                    <button className="dropdown-item text-danger" onClick={cerrarSesion}>
+                    <button className="dropdown-item text-danger" onClick={handleCerrarSesion}>
                       <i className="bi bi-box-arrow-right me-2"></i>Cerrar Sesión
                     </button>
                   </li>

@@ -1,16 +1,18 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { useAuth } from "./AuthContext";
 import "../Css/Estilo.css";
 
 const Login = () => {
   const navigate = useNavigate();
+  const { iniciarSesion } = useAuth();
   const [formData, setFormData] = useState({
     correo: '',
     password: ''
   });
   const [errors, setErrors] = useState({});
 
-  // Validar el correo
+  // Validar el correo 
   const validarCorreoElectronico = (value) => {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (value.trim() === '') {
@@ -58,16 +60,16 @@ const Login = () => {
     const passValida = !passwordError;
 
     if (correoValido && passValida) {
-      // Obtener usuarios
+      // Obtener usuarios del local storage
       const usuariosGuardados = JSON.parse(localStorage.getItem('usuarios')) || [];
       
-      // Buscar usuario
+      // Buscar usuario con las credenciales ingresadas
       const usuarioEncontrado = usuariosGuardados.find(
         user => user.correo === formData.correo && user.password === formData.password
       );
 
       if (usuarioEncontrado) {
-        // Guardar sesion activa
+        // Crear objeto de usuario activo
         const usuarioActivo = {
           id: usuarioEncontrado.id,
           nombre: usuarioEncontrado.nombre,
@@ -76,16 +78,14 @@ const Login = () => {
           genero: usuarioEncontrado.genero
         };
 
-        localStorage.setItem('usuarioActivo', JSON.stringify(usuarioActivo));
+        // Usar el contexto para iniciar sesion
+        iniciarSesion(usuarioActivo);
         
         alert(`Bienvenido ${usuarioEncontrado.nombre} ${usuarioEncontrado.apellido}`);
         
         setFormData({ correo: '', password: '' });
-        
-        // Forzar recarga para actualizar el Navbar
-        window.location.href = '/';
+        navigate('/');
       } else {
-        // Credenciales incorrectas
         setErrors({
           correo: '',
           password: 'Correo o contraseña incorrectos.'

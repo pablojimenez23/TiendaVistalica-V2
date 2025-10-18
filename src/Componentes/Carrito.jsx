@@ -25,6 +25,7 @@ export const CarritoProvider = ({ children }) => {
   
   const [isOpen, setIsOpen] = useState(false);
 
+  // Guardar carrito en localStorage
   useEffect(() => {
     localStorage.setItem('carrito', JSON.stringify(carrito));
   }, [carrito]);
@@ -52,6 +53,7 @@ export const CarritoProvider = ({ children }) => {
       }
     });
 
+    // Reducir stock
     setStocks(prev => ({
       ...prev,
       [producto.id]: prev[producto.id] - 1
@@ -61,6 +63,7 @@ export const CarritoProvider = ({ children }) => {
   const quitarProducto = (id) => {
     const producto = carrito.find(item => item.id === id);
     if (producto) {
+      // Restaurar stock
       setStocks(prev => ({
         ...prev,
         [id]: prev[id] + producto.cantidad
@@ -104,6 +107,7 @@ export const CarritoProvider = ({ children }) => {
   };
 
   const vaciarCarrito = () => {
+    // Restaurar todo el stock
     carrito.forEach(item => {
       setStocks(prev => ({
         ...prev,
@@ -197,7 +201,8 @@ const Carrito = () => {
     setIsOpen
   } = useCarrito();
 
-  const { usuario } = useAuth();
+  // Obtener funcion agregarPedido
+  const { usuario, agregarPedido } = useAuth();
   const navigate = useNavigate();
 
   const formatearPrecio = (precio) => {
@@ -217,9 +222,12 @@ const Carrito = () => {
       return;
     }
 
+    agregarPedido(carrito, obtenerTotal());
+    
     alert(`Procesando compra por ${formatearPrecio(obtenerTotal())}`);
     vaciarCarrito();
     setIsOpen(false);
+    navigate('/pedidos');
   };
 
   const handleOverlayClick = (e) => {
@@ -310,15 +318,13 @@ const Carrito = () => {
             <div className="carrito-acciones">
               <button 
                 className="btn btn-vaciar"
-                onClick={vaciarCarrito}
-              >
+                onClick={vaciarCarrito}>
                 Vaciar
               </button>
               <button 
                 className="btn btn-primary"
                 onClick={handleCheckout}
-                style={{flex: 2}}
-              >
+                style={{flex: 2}}>
                 Finalizar Compra
               </button>
             </div>

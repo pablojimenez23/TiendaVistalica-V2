@@ -113,7 +113,7 @@ const Navbar = () => {
                     </Link>
                   </li>
                   <li>
-                    <Link className="dropdown-item" to="/mis-pedidos">
+                    <Link className="dropdown-item" to="/pedidos">
                       <i className="bi bi-box-seam me-2"></i>Mis Pedidos
                     </Link>
                   </li>

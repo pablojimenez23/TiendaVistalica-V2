@@ -2,8 +2,6 @@ import React from "react";
 import "../Css/Estilo.css";
 import "../Css/Historia.css";
 
-//comentarios prueba
-
 const Historia = () => {
   const hitos = [
     {
@@ -69,7 +67,7 @@ const Historia = () => {
   return (
     <section className="historia-container">
       <div className="container py-5">
-        {/* Header */}
+        {/*Header*/}
         <div className="historia-header">
           <h1 className="historia-title">Nuestra Historia</h1>
           <p className="historia-subtitle">
@@ -77,7 +75,7 @@ const Historia = () => {
           </p>
         </div>
 
-        {/* Introduccion */}
+        {/*Introduccion*/}
         <div className="historia-intro">
           <div className="row align-items-center">
             <div className="col-md-6">
@@ -103,7 +101,7 @@ const Historia = () => {
           </div>
         </div>
 
-        {/* Tarjetas de Hitos */}
+        {/*Hitos*/}
         <div className="historia-hitos-section">
           <h2 className="section-title">Nuestros Hitos</h2>
           <div className="row g-4">
@@ -131,7 +129,7 @@ const Historia = () => {
           </div>
         </div>
 
-        {/* Valores */}
+        {/*Valores*/}
         <div className="historia-valores-section">
           <h2 className="section-title">Nuestros Valores</h2>
           <div className="row g-4">

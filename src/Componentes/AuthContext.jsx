@@ -5,7 +5,14 @@ const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [usuario, setUsuario] = useState(null);
   const [cargando, setCargando] = useState(true);
+  
+  // Cargar pedidos desde el local storage
+  const [pedidos, setPedidos] = useState(() => {
+    const pedidosGuardados = localStorage.getItem('pedidos');
+    return pedidosGuardados ? JSON.parse(pedidosGuardados) : [];
+  });
 
+  // Cargar usuario al iniciar
   useEffect(() => {
     const usuarioGuardado = localStorage.getItem('usuarioActivo');
     if (usuarioGuardado) {
@@ -16,21 +23,43 @@ export const AuthProvider = ({ children }) => {
     setCargando(false);
   }, []);
 
-  // Funcion para iniciar sesion
+  // Guardar pedidos en local storage
+  useEffect(() => {
+    localStorage.setItem('pedidos', JSON.stringify(pedidos));
+  }, [pedidos]);
+
   const iniciarSesion = (datosUsuario) => {
     setUsuario(datosUsuario);
     localStorage.setItem('usuarioActivo', JSON.stringify(datosUsuario));
   };
 
-  // Funcion para cerrar sesion
   const cerrarSesion = () => {
     setUsuario(null);
     localStorage.removeItem('usuarioActivo');
   };
 
-  // Funcion para verificar si el usuario esta autenticado
   const estaAutenticado = () => {
     return usuario !== null;
+  };
+
+  // Crear nuevo pedido
+  const agregarPedido = (carrito, total) => {
+    const nuevoPedido = {
+      id: Date.now(),
+      usuarioId: usuario?.id,
+      fecha: new Date().toISOString(),
+      productos: carrito,
+      total: total,
+      estado: 'Pendiente'
+    };
+    setPedidos(prev => [...prev, nuevoPedido]);
+    return nuevoPedido;
+  };
+
+  // Obtener pedidos del usuario actual
+  const obtenerPedidosUsuario = () => {
+    if (!usuario) return [];
+    return pedidos.filter(pedido => pedido.usuarioId === usuario.id);
   };
 
   return (
@@ -40,7 +69,10 @@ export const AuthProvider = ({ children }) => {
       iniciarSesion, 
       cerrarSesion, 
       estaAutenticado,
-      cargando 
+      cargando,
+      pedidos,
+      agregarPedido,
+      obtenerPedidosUsuario
     }}>
       {children}
     </AuthContext.Provider>

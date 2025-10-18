@@ -15,6 +15,8 @@ import Registro from "./Componentes/Registro";
 import Impacto from "./Componentes/Impacto";
 import Contacto from "./Componentes/Contacto";
 import DetalleProducto from "./Componentes/DetalleProducto";
+import Perfil from "./Componentes/Perfil";
+import Pedidos from "./Componentes/Pedidos";
 import { CarritoProvider } from "./Componentes/Carrito";
 import Carrito from "./Componentes/Carrito";
 import { AuthProvider } from "./Componentes/AuthContext";
@@ -52,6 +54,8 @@ function App() {
               <Route path="/registro" element={<Registro />} />
               <Route path="/impacto" element={<Impacto />} />
               <Route path="/contacto" element={<Contacto />} />
+              <Route path="/perfil" element={<Perfil />} />
+              <Route path="/pedidos" element={<Pedidos />} />
             </Routes>
             
             <Footer />

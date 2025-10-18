@@ -275,8 +275,7 @@ const DetalleProducto = () => {
     <section className="container py-5">
       <button 
         className="btn btn-outline-secondary mb-4"
-        onClick={() => navigate('/catalogo')}
-      >
+        onClick={() => navigate('/catalogo')}>
         <i className="bi bi-arrow-left me-2"></i>
         Volver al Catálogo
       </button>
@@ -299,7 +298,7 @@ const DetalleProducto = () => {
           <h1 className="mb-3">{producto.nombre}</h1>
           <h2 className="text-primary mb-4">{producto.precio}</h2>
 
-          {/* Estado de stock (sin mostrar cantidad) */}
+          {/*Stock*/}
           <div className="mb-4">
             {stockActual > 0 ? (
               <span className="badge bg-success fs-6">
@@ -339,7 +338,7 @@ const DetalleProducto = () => {
             </div>
           )}
 
-          {/* Cantidad*/}
+          {/*Cantidad*/}
           {stockActual > 0 && (
             <div className="mb-4">
               <h5>Cantidad</h5>
@@ -347,16 +346,14 @@ const DetalleProducto = () => {
                 <button 
                   className="btn btn-outline-secondary"
                   onClick={() => handleCantidadChange('decrementar')}
-                  disabled={cantidad <= 1}
-                >
+                  disabled={cantidad <= 1}>
                   <i className="bi bi-dash"></i>
                 </button>
                 <span className="fs-5 fw-bold">{cantidad}</span>
                 <button 
                   className="btn btn-outline-secondary"
                   onClick={() => handleCantidadChange('incrementar')}
-                  disabled={cantidad >= stockActual}
-                >
+                  disabled={cantidad >= stockActual}>
                   <i className="bi bi-plus"></i>
                 </button>
               </div>
@@ -368,14 +365,13 @@ const DetalleProducto = () => {
             <button 
               className={`btn ${stockActual > 0 ? 'btn-primary' : 'btn-secondary'} w-100 py-3`}
               onClick={handleAgregarCarrito}
-              disabled={stockActual === 0}
-            >
+              disabled={stockActual === 0}>
               <i className="bi bi-cart-plus me-2"></i>
               {stockActual > 0 ? 'Agregar al Carrito' : 'Sin Stock'}
             </button>
           </div>
 
-          {/* Detalles adicionales */}
+          {/*Detalles adicionales */}
           <div className="card bg-light">
             <div className="card-body">
               <h5 className="card-title">Detalles del Producto</h5>

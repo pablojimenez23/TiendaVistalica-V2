@@ -9,6 +9,7 @@ vi.mock("../src/Componentes/AuthContext", () => ({
 }));
 
 const mockNavigate = vi.fn();
+
 vi.mock("react-router-dom", async () => {
   const actual = await vi.importActual("react-router-dom");
   return {
@@ -150,7 +151,12 @@ describe("Componente Carrito", () => {
   });
 
   it("checkout con usuario vacía carrito y muestra alerta", () => {
-    useAuth.mockReturnValue({ usuario: { nombre: "Test" } });
+    const mockAgregarPedido = vi.fn();
+    useAuth.mockReturnValue({
+      usuario: { nombre: "Test" },
+      agregarPedido: mockAgregarPedido
+    });
+
     renderConProvider(
       <>
         <TestAgregarProducto />
@@ -165,6 +171,7 @@ describe("Componente Carrito", () => {
     const alertMock = vi.spyOn(window, "alert").mockImplementation(() => {});
     fireEvent.click(botonFinalizar);
 
+    expect(mockAgregarPedido).toHaveBeenCalled();
     expect(alertMock).toHaveBeenCalledWith(expect.stringContaining("Procesando compra por"));
     expect(screen.getByText(/tu carrito está vacío/i)).toBeInTheDocument();
 

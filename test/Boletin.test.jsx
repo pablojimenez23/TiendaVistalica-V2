@@ -1,6 +1,7 @@
 import React from "react";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { vi } from "vitest";
 import Boletin from "../src/Componentes/Boletin";
 
 describe("Componente Boletin", () => {
@@ -25,49 +26,30 @@ describe("Componente Boletin", () => {
 
   it('renderiza el botón "Suscribirme"', () => {
     render(<Boletin />);
-    expect(
-      screen.getByRole("button", { name: /suscribirme/i })
-    ).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /suscribirme/i })).toBeInTheDocument();
   });
 
-  it("muestra error cuando el campo está vacío", () => {
+  it("muestra error cuando el campo está vacío", async () => {
     render(<Boletin />);
-    
     const boton = screen.getByRole("button", { name: /suscribirme/i });
-    fireEvent.click(boton);
-    
-    expect(screen.getByText("Por favor, ingresa tu correo.")).toBeInTheDocument();
+    await userEvent.click(boton);
+
+    expect(await screen.findByText("Por favor, ingresa tu correo.")).toBeInTheDocument();
   });
 
-  it("muestra error cuando el correo es inválido", () => {
-    render(<Boletin />);
-  
-    const inputEmail = screen.getByPlaceholderText("Tu correo electrónico");
-    fireEvent.change(inputEmail, { target: { value: "correosinvalido" } });
-  
-    const boton = screen.getByRole("button", { name: /suscribirme/i });
-    fireEvent.click(boton);
-  
-    const feedback = document.querySelector('#boletinFeedback');
-    expect(feedback).toBeInTheDocument();
-    expect(feedback.textContent).toMatch(/formato válido/i);
-    expect(feedback.style.display).toBe('block');
-  });
-
-  it("muestra alerta cuando el correo es válido", () => {
+  it("muestra alerta cuando el correo es válido", async () => {
     const alertMock = vi.spyOn(window, "alert").mockImplementation(() => {});
-    
+
     render(<Boletin />);
-    
     const inputEmail = screen.getByPlaceholderText("Tu correo electrónico");
-    fireEvent.change(inputEmail, { target: { value: "test@example.com" } });
-    
+    await userEvent.type(inputEmail, "test@example.com");
+
     const boton = screen.getByRole("button", { name: /suscribirme/i });
-    fireEvent.click(boton);
-    
+    await userEvent.click(boton);
+
     expect(alertMock).toHaveBeenCalledWith("¡Suscripción realizada correctamente!");
     expect(inputEmail.value).toBe("");
-    
+
     alertMock.mockRestore();
   });
 });

@@ -3,7 +3,7 @@ import { render, screen, fireEvent } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import Login from "../src/Componentes/Login";
 
-// Mock de useAuth
+
 const mockIniciarSesion = vi.fn();
 
 vi.mock("../src/Componentes/AuthContext", () => ({
@@ -12,7 +12,7 @@ vi.mock("../src/Componentes/AuthContext", () => ({
   })
 }));
 
-// Mock de alert
+
 const alertMock = vi.spyOn(window, "alert").mockImplementation(() => {});
 
 describe("Componente Login", () => {

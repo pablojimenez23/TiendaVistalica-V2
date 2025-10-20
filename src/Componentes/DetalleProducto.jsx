@@ -371,7 +371,7 @@ const DetalleProducto = () => {
             </button>
           </div>
 
-          {/*Detalles adicionales */}
+          {/*Detalles adicionales*/}
           <div className="card bg-light">
             <div className="card-body">
               <h5 className="card-title">Detalles del Producto</h5>

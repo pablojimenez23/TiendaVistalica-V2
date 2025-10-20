@@ -6,6 +6,7 @@ import { useAuth } from "./AuthContext";
 
 const CarritoContext = createContext();
 
+
 const stockInicial = {
   1: 15, 2: 0, 3: 8, 4: 12, 5: 0, 6: 10,
   7: 6, 8: 0, 9: 9, 10: 14, 11: 0, 12: 11,
@@ -25,7 +26,7 @@ export const CarritoProvider = ({ children }) => {
   
   const [isOpen, setIsOpen] = useState(false);
 
-  // Guardar carrito en localStorage
+  // Guardar carrito en local Storage
   useEffect(() => {
     localStorage.setItem('carrito', JSON.stringify(carrito));
   }, [carrito]);
@@ -201,7 +202,7 @@ const Carrito = () => {
     setIsOpen
   } = useCarrito();
 
-  // Obtener funcion agregarPedido
+
   const { usuario, agregarPedido } = useAuth();
   const navigate = useNavigate();
 

@@ -4,18 +4,22 @@ import { useAuth } from "./AuthContext";
 import "../Css/Estilo.css";
 
 const Pedidos = () => {
-  const { usuario, obtenerPedidosUsuario } = useAuth();
+  const { usuario, obtenerPedidosUsuario, cargando } = useAuth();
   const navigate = useNavigate();
-  const pedidosUsuario = obtenerPedidosUsuario();
 
-  // Redirigir si no hay usuario
   React.useEffect(() => {
-    if (!usuario) {
+    if (!cargando && !usuario) {
       navigate('/login');
     }
-  }, [usuario, navigate]);
+  }, [usuario, cargando, navigate]);
+
+  if (cargando) {
+    return <div className="text-center py-5">Cargando pedidos...</div>;
+  }
 
   if (!usuario) return null;
+
+  const pedidosUsuario = obtenerPedidosUsuario();
 
   const formatearFecha = (fecha) => {
     const date = new Date(fecha);
@@ -52,18 +56,7 @@ const Pedidos = () => {
     <section className="container py-5">
       <div className="row">
         <div className="col-12">
-          <div className="d-flex justify-content-between align-items-center mb-4">
-            <h2>
-            Mis Pedidos
-            </h2>
-            <button 
-              className="btn btn-outline-secondary"
-              onClick={() => navigate('/perfil')}
-            >
-              <i className="bi bi-arrow-left me-2"></i>
-              Volver al Perfil
-            </button>
-          </div>
+          <h2 className="mb-4">Mis Pedidos</h2>
 
           {pedidosUsuario.length === 0 ? (
             <div className="text-center py-5">
@@ -128,7 +121,7 @@ const Pedidos = () => {
                                   </div>
                                 </td>
                                 <td className="text-center">{producto.cantidad}</td>
-                                <td className="text-end">{producto.precio}</td>
+                                <td className="text-end">{formatearPrecio(producto.precio)}</td>
                               </tr>
                             ))}
                           </tbody>
@@ -143,6 +136,7 @@ const Pedidos = () => {
                         </table>
                       </div>
                     </div>
+
                   </div>
                 </div>
               ))}
